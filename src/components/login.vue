@@ -35,11 +35,12 @@
   </div>
 </template>
 <script>
+import {login_api} from '@/api/api'
 export default {
   data() {
     return {
       listForm: {
-        username: "curry",
+        username: "admin",
         password: "123456"
       },
       loginFormRules: {
@@ -60,8 +61,21 @@ export default {
       this.$refs.loginFormRef.resetFields();
     },
     login() {
-      this.$refs.loginFormRef.validate(val => {
-        console.log(val);
+      this.$refs.loginFormRef.validate(async val => {
+        // console.log(val);
+        if (!val) return;
+        // const { data: res } = await this.$http.post("login", this.listForm);
+        const { data: res } = await login_api(this.listForm)
+        //  console.log(res);
+        if (res.meta.status !== 200) {
+          this.$message.error("登录失败");
+        } else {
+          this.$message.success("登录成功");
+        };
+        // console.log(res)
+        // 保存token
+        window.sessionStorage.setItem("token",res.data.token);
+        this.$router.push('home')
       });
     }
   }

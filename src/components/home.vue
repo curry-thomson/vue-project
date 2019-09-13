@@ -1,8 +1,19 @@
 <template>
-<div><h3>这是home组件</h3></div>
+<el-button @click="logout" type="info">退出</el-button>
 </template>
 <script>
 export default {
+    data(){
+        return{
+
+        }
+    },
+    methods:{
+        logout(){
+            window.sessionStorage.clear('token');
+            this.$router.push('/login')
+        }
+    }
     
 }
 </script>
